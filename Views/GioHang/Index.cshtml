@@ -1,0 +1,42 @@
+﻿@using GaUMuoi.Models
+@model List<GioHang>
+
+<h2>Giỏ hàng - Gà ủ muối</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên khách hàng</th>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Tổng tiền</th>
+        </tr>
+    </thead>
+    </tbody>
+</table>
+
+<form asp-action="ThanhToan" method="post">
+    <button type="submit" class="btn btn-success">Thanh toán</button>
+</form>
+
+<h3>Thêm sản phẩm vào giỏ hàng</h3>
+<form asp-action="ThemVaoGioHang" method="post">
+    <div class="form-group">
+        <label>Tên khách hàng</label>
+        <input name="tenKhachHang" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Sản phẩm</label>
+        <input name="sanPham" class="form-control" value="Gà ủ muối" />
+    </div>
+    <div class="form-group">
+        <label>Số lượng</label>
+        <input name="soLuong" type="number" class="form-control" value="1" />
+    </div>
+    <div class="form-group">
+        <label>Giá</label>
+        <input name="gia" type="number" step="0.01" class="form-control" value="150000" />
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm vào giỏ</button>
+</form>

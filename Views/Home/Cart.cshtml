@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Giỏ Hàng";
+}
+
+<h2>🛒 Giỏ Hàng</h2>
+
+<table id="cart-table" border="1">
+    <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Dữ liệu từ JavaScript -->
+    </tbody>
+</table>
+
+<h3>Tổng tiền: <span id="total-price">0</span> VND</h3>
+
+<button id="checkout-btn">💳 Thanh Toán</button>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+    button {
+        background-color: orange;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let tbody = document.querySelector("#cart-table tbody");
+        let totalPrice = 0;
+
+        function updateCartTable() {
+            tbody.innerHTML = "";
+            totalPrice = 0;
+
+            cart.forEach((product, index) => {
+                let row = document.createElement("tr");
+
+                let total = product.price * product.quantity;
+                totalPrice += total;
+
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.price.toLocaleString()} VND</td>
+                    <td>
+                        <button onclick="updateQuantity(${index}, -1)">➖</button>
+                        ${product.quantity}
+                        <button onclick="updateQuantity(${index}, 1)">➕</button>
+                    </td>
+                    <td>${total.toLocaleString()} VND</td>
+                    <td><button onclick="removeFromCart(${index})">❌ Xóa</button></td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            document.getElementById("total-price").textContent = totalPrice.toLocaleString();
+        }
+
+        window.updateQuantity = function (index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartTable();
+        };
+
+        window.removeFromCart = function (index) {
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartTable();
+        };
+
+        document.getElementById("checkout-btn").addEventListener("click", function () {
+            if (cart.length === 0) {
+                alert("Giỏ hàng trống, không thể thanh toán!");
+                return;
+            }
+
+            // Xử lý thanh toán (mô phỏng)
+            alert("Thanh toán thành công! Cảm ơn bạn đã mua hàng.");
+            localStorage.removeItem("cart");
+            window.location.href = "/"; // Chuyển về trang chủ
+        });
+
+        updateCartTable();
+    });
+</script>

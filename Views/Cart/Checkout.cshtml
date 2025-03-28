@@ -1,0 +1,52 @@
+﻿@model List<GaUMuoi.Models.CartItem>
+
+<h2>Thanh Toán</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Giỏ hàng trống. <a href="@Url.Action("Index", "Home")">Quay lại mua sắm</a></p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Tên Sản Phẩm</th>
+            <th>Giá</th>
+            <th>Số Lượng</th>
+            <th>Tổng</th>
+        </tr>
+        @{
+            decimal total = 0;
+        }
+        @foreach (var item in Model)
+        {
+            decimal itemTotal = item.Price * item.Quantity;
+            total += itemTotal;
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Price.ToString("N0") VND</td>
+                <td>@item.Quantity</td>
+                <td>@itemTotal.ToString("N0") VND</td>
+            </tr>
+        }
+        <tr>
+            <td colspan="3"><strong>Tổng Tiền</strong></td>
+            <td><strong>@total.ToString("N0") VND</strong></td>
+        </tr>
+    </table>
+    <p>Cảm ơn bạn đã mua hàng! (Đây là mô phỏng, không có thanh toán thực tế)</p>
+    <a href="@Url.Action("ClearCart")" class="btn btn-danger">Xóa Giỏ Hàng</a>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Tiếp Tục Mua Sắm</a>
+}
+
+<style>
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .btn-danger { background-color: #dc3545; color: white; }
+    .btn-primary { background-color: #007bff; color: white; }
+</style>

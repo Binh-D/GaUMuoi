@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Kết Quả Thanh Toán";
+}
+
+<h2>Kết Quả Thanh Toán</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div style="color: @(ViewBag.Message.Contains("thành công") ? "green" : "red");">
+        <h3>@ViewBag.Message</h3>
+    </div>
+}
+
+<a href="/GioHang/Index" class="btn btn-primary">Quay lại giỏ hàng</a>

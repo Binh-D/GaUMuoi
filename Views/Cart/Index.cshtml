@@ -1,0 +1,59 @@
+﻿@model List<GaUMuoi.Models.CartItem>
+
+<h2>Giỏ Hàng</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Giỏ hàng trống. <a href="@Url.Action("Index", "Home")">Tiếp tục mua sắm</a></p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên Sản Phẩm</th>
+                <th>Hình Ảnh</th>
+                <th>Giá</th>
+                <th>Số Lượng</th>
+                <th>Tổng</th>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                decimal total = 0;
+            }
+            @foreach (var item in Model)
+            {
+                decimal itemTotal = item.Price * item.Quantity;
+                total += itemTotal;
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td><img src="@Url.Content(item.ImageUrl)" width="50" /></td>
+                    <td>@item.Price.ToString("N0") VND</td>
+                    <td>
+                        <form asp-action="UpdateQuantity" asp-controller="Cart" method="post">
+                            <input type="hidden" name="id" value="@item.ProductId" />
+                            <input type="number" name="quantity" value="@item.Quantity" min="1" />
+                            <button type="submit">Cập nhật</button>
+                        </form>
+                    </td>
+                    <td>@itemTotal.ToString("N0") VND</td>
+                    <td><a href="@Url.Action("RemoveFromCart", new { id = item.ProductId })">Xóa</a></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4"><strong>Tổng Tiền</strong></td>
+                <td><strong>@total.ToString("N0") VND</strong></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+    <a href="@Url.Action("ClearCart")" class="btn btn-danger">Xóa Tất Cả</a>
+    <a href="@Url.Action("Checkout")" class="btn btn-success">Thanh Toán</a>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Tiếp Tục Mua Sắm</a>
+}
+<a asp-controller="Cart" asp-action="Checkout" class="btn btn-success">Thanh toán</a>
+}

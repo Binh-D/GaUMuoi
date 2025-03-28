@@ -1,0 +1,68 @@
+﻿@model List<GaUMuoi.Models.Product>
+
+<h2>Danh sách sản phẩm</h2>
+<table border="1" id="productTable">
+    <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Giá</th>
+        @if (Context.Session.GetString("Role") == "Admin")
+        {
+            <th>Hành động</th>
+        }
+    </tr>
+    @foreach (var sp in Model)
+    {
+        <tr id="row-@sp.Id">
+            <td>@sp.Id</td>
+            @if (Context.Session.GetString("Role") == "Admin")
+            {
+                <td contenteditable="true" class="editable" data-id="@sp.Id" data-field="Ten">@sp.Name</td>
+                <td contenteditable="true" class="editable" data-id="@sp.Id" data-field="Gia">@sp.Price</td>
+                <td>
+                    <button class="delete-btn" data-id="@sp.Id">Xóa</button>
+                </td>
+            }
+            else
+            {
+                <td>@sp.Name</td>
+                <td>@sp.Price</td>
+            }
+        </tr>
+    }
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Xóa sản phẩm (chỉ Admin mới thấy nút này)
+        $(".delete-btn").click(function () {
+            var id = $(this).data("id");
+            if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
+                $.ajax({
+                    url: "/SanPham/Xoa/" + id,
+                    type: "POST",
+                    success: function () {
+                        $("#row-" + id).remove();
+                    }
+                });
+            }
+        });
+
+        // Cập nhật sản phẩm (chỉ Admin có thể chỉnh sửa)
+        $(".editable").blur(function () {
+            var id = $(this).data("id");
+            var field = $(this).data("field");
+            var value = $(this).text();
+
+            $.ajax({
+                url: "/SanPham/CapNhat",
+                type: "POST",
+                data: { id: id, field: field, value: value },
+                success: function () {
+                    alert("Cập nhật thành công!");
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Chính Sách";
+}
+
+<h2>CHÍNH SÁCH</h2>
+<ul>
+    <li><a href="#" id="linkHuongDan">Hướng dẫn mua hàng</a></li>
+    <li><a href="#">Chính sách đổi trả hàng</a></li>
+    <li><a href="#">Chính sách bảo mật</a></li>
+    <li><a href="#">Giao hàng & Thanh toán</a></li>
+</ul>
+
+<div id="contentHuongDan"></div>
+
+@section Scripts {
+    <script>
+        document.getElementById("linkHuongDan").addEventListener("click", function (event) {
+            event.preventDefault(); // Ngăn chặn load lại trang
+
+            fetch('/Policy/HuongDanMuaHang')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("contentHuongDan").innerHTML = data;
+                })
+                .catch(error => console.error('Lỗi:', error));
+        });
+    </script>
+}

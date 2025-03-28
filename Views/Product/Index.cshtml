@@ -1,0 +1,38 @@
+﻿@model List<GaUMuoi.Models.Product>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+}
+
+<h2>Danh sách sản phẩm</h2>
+@if (ViewBag.IsAdmin)
+{
+    <a href="@Url.Action("Create", "Product")" class="btn btn-primary">➕ Thêm Sản Phẩm</a>
+}
+
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            @foreach (var product in Model)
+            {
+                <div style="border: 1px solid #ddd; padding: 10px; width: 200px; text-align: center;">
+                    <img src="@product.ImageUrl" alt="@product.Name" width="150" height="150" />
+                    <h3>@product.Name</h3>
+                    <p>Giá: @product.Price.ToString("N0") đ</p>
+
+                    <form method="post" action="@Url.Action("AddToCart", "Cart")">
+                        <input type="hidden" name="productId" value="@product.Id" />
+                        <button type="submit" class="btn btn-success">🛒 Thêm vào giỏ hàng</button>
+                    </form>
+
+                    @if (ViewBag.IsAdmin) // Chỉ hiển thị nếu là Admin
+                    {
+                        <a href="@Url.Action("Edit", "Product", new { id = product.Id })" class="btn btn-warning">✏️ Sửa</a>
+                        <a href="@Url.Action("Delete", "Product", new { id = product.Id })" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">🗑️ Xóa</a>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>

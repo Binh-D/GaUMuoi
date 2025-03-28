@@ -1,0 +1,36 @@
+﻿@model List<GaUMuoi.Models.Product>
+
+<h2>🍗 Danh sách sản phẩm</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Giá</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Price.ToString("N0") đ</td>
+                    <td>
+                        <a asp-controller="Cart" asp-action="AddToCart"
+                           asp-route-id="@product.Id"
+                           asp-route-name="@product.Name"
+                           asp-route-price="@product.Price"
+                           class="btn btn-primary">🛒 Thêm vào giỏ</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Không có sản phẩm nào.</p>
+}

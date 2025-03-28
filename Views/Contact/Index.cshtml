@@ -1,0 +1,55 @@
+﻿@model Contact
+
+@{
+    ViewData["Title"] = "Liên Hệ";
+}
+
+<h2 class="text-warning">LIÊN HỆ</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<form asp-action="Submit" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <input asp-for="FullName" class="form-control" placeholder="Họ tên" required />
+        </div>
+        <div class="col-md-6">
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Số điện thoại" required />
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-6">
+            <input asp-for="Address" class="form-control" placeholder="Địa chỉ" />
+        </div>
+        <div class="col-md-6">
+            <input asp-for="Email" type="email" class="form-control" placeholder="Email" />
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <input asp-for="Subject" class="form-control" placeholder="Chủ đề" />
+    </div>
+
+    <div class="mt-2">
+        <textarea asp-for="Message" class="form-control" placeholder="Nội dung" rows="5"></textarea>
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Gửi</button>
+        <button type="reset" class="btn btn-secondary">Nhập lại</button>
+    </div>
+    <div class="contact-box">
+        <h4>LIÊN HỆ ĐẶT HÀNG</h4>
+        <p><strong>ZALO:</strong></p>
+        <ul>
+            <li>0793 686 404</li>
+        </ul>
+        <p><strong>Email:</strong> <a href="mailto:binhduong21092016@gmail.com"</a></p>
+        <p><strong>Giờ hoạt động:</strong> 07:00 - 23:00 (T2 - CN)</p>
+    </div>
+
+</form>
